@@ -17,7 +17,10 @@ var commentRoutes    = require("./routes/comments"),
     indexRoutes       = require("./routes/index")
 
 //seedDB(); //seed the databse
+// mongodb://karan:karanyelpcamp30@ds227594.mlab.com:27594/karanyelpcamp
 mongoose.connect("mongodb://localhost/yelp_camp");
+//mongoose.connect("mongodb://karan:karanyelpcamp30@ds227594.mlab.com:27594/karanyelpcamp");
+console.log(process.env.DATABASEURL);
 app.set("view engine","ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,6 +34,8 @@ app.use(require("express-session")({
   resave: false,
   saveUninitialized: false
 }));
+
+var port = process.env.PORT;
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,7 +54,7 @@ app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
-app.listen(3000,function(){
+app.listen(port||3000,function(){
    console.log("Server has started!!!"); 
 });
 
